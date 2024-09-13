@@ -183,7 +183,7 @@ vim.keymap.set('n', '<A-k>', 'ddkP', { desc = 'Move text up one line' })
 
 -- Copying line to below and above
 vim.keymap.set('n', '<A-J>', 'yyp', { desc = 'Copy text to line below' })
-vim.keymap.set('n', '<A-K>', 'yykP', { desc = 'Copy text to line below' })
+vim.keymap.set('n', '<A-K>', 'yyP', { desc = 'Copy text to line below' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
