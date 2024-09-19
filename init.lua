@@ -185,11 +185,22 @@ vim.keymap.set('n', '<A-k>', 'ddkP', { desc = 'Move text up one line' })
 vim.keymap.set('n', '<A-J>', 'yyp', { desc = 'Copy text to line below' })
 vim.keymap.set('n', '<A-K>', 'yykP', { desc = 'Copy text to line below' })
 
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+-- vimtex section
+-- function for opening currently selected .tex file as a pdf
+local function open_pdf()
+  local path = vim.fn.expand '%:p:r'
+  local pdf = path .. '.pdf'
+  vim.cmd 'tab ter'
+  vim.fn.chansend(vim.bo.channel, 'zathura ' .. pdf .. '\n')
+  vim.cmd 'tabc'
+end
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'tex',
+  callback = function()
+    vim.keymap.set('n', '<leader>lp', open_pdf, { desc = 'Open pdf in zathura' })
+  end,
+})
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
