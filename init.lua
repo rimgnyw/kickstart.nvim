@@ -183,7 +183,7 @@ vim.keymap.set('n', '<A-k>', 'ddkP', { desc = 'Move text up one line' })
 
 -- Copying line to below and above
 vim.keymap.set('n', '<A-J>', 'yyp', { desc = 'Copy text to line below' })
-vim.keymap.set('n', '<A-K>', 'yykP', { desc = 'Copy text to line below' })
+vim.keymap.set('n', '<A-K>', 'yykp', { desc = 'Copy text to line below' })
 
 -- vimtex section
 -- function for opening currently selected .tex file as a pdf
