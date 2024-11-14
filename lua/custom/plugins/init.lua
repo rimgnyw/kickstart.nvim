@@ -17,12 +17,13 @@ return {
   {
     'micangl/cmp-vimtex',
   },
-  {
-    dir = '/home/wingmyr/Documents/projects/neovim-plugins/test-plugin.nvim',
-    -- dev = true,
-    name = 'test-plugin',
-    config = function()
-      require('test-plugin').setup()
-    end,
-  },
+  -- test plugin
+  -- {
+  --   dir = '/home/wingmyr/Documents/projects/neovim-plugins/test-plugin.nvim',
+  --   -- dev = true,
+  --   name = 'test-plugin',
+  --   config = function()
+  --     require('test-plugin').setup()
+  --   end,
+  -- },
 }
