@@ -175,7 +175,29 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('n', '<A-t>', ':split | terminal <CR>', { desc = 'Open terminal in horizontal split' })
+
+-- Open terminal window at 1/4 the size of the screen and maintain the size relative to the window
+local term_win = nil
+
+local function resize_terminal()
+  if term_win and vim.api.nvim_win_is_valid(term_win) then
+    local total_height = vim.o.lines - vim.o.cmdheight
+    local split_height = math.floor(total_height / 4)
+    vim.api.nvim_win_set_height(term_win, split_height)
+  end
+end
+
+function Open_term()
+  vim.cmd ':split | terminal'
+  term_win = vim.api.nvim_get_current_win()
+  resize_terminal()
+end
+
+vim.api.nvim_create_autocmd('VimResized', {
+  callback = resize_terminal,
+})
+
+vim.keymap.set('n', '<A-t>', ':lua Open_term() <CR>', { desc = 'Open terminal in horizontal split' })
 
 -- Moving text up and down
 vim.keymap.set('n', '<A-j>', 'ddp', { desc = 'Move text down one line' })
@@ -941,7 +963,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
