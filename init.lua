@@ -207,6 +207,14 @@ vim.keymap.set('n', '<A-k>', 'ddkP', { desc = 'Move text up one line' })
 vim.keymap.set('n', '<A-J>', 'yyp', { desc = 'Copy text to line below' })
 vim.keymap.set('n', '<A-K>', 'yyP', { desc = 'Copy text to line below' })
 
+-- Set psql to have sql highlighting
+vim.api.nvim_create_autocmd('BufRead', {
+  pattern = '*.psql',
+  callback = function()
+    vim.bo.filetype = 'sql'
+  end,
+})
+
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
