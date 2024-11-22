@@ -202,6 +202,14 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+-- Set psql to have sql highlighting
+vim.api.nvim_create_autocmd('BufRead', {
+  pattern = '*.psql',
+  callback = function()
+    vim.bo.filetype = 'sql'
+  end,
+})
+
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
