@@ -26,7 +26,7 @@ return {
   --     require('test-plugin').setup()
   --   end,
   -- },
-  {
-    'akinsho/git-conflict.nvim',
-  },
+  -- {
+  --   'akinsho/git-conflict.nvim',
+  -- },
 }
