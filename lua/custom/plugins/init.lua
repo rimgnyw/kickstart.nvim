@@ -17,6 +17,18 @@ return {
   {
     'micangl/cmp-vimtex',
   },
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = {
+        line = 'gcc',
+      },
+      opleader = {
+        line = 'gc',
+        block = 'gc',
+      },
+    },
+  },
   -- test plugin
   -- {
   --   dir = '/home/wingmyr/Documents/projects/neovim-plugins/test-plugin.nvim',
