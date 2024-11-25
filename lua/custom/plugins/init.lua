@@ -25,7 +25,7 @@ return {
       },
       opleader = {
         line = 'gc',
-        block = 'gc',
+        block = 'gb',
       },
     },
   },
