@@ -156,6 +156,7 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 1
+vim.opt.scrolloff = 1
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -175,11 +176,45 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('n', '<A-t>', ':split | terminal <CR>', { desc = 'Open terminal in horizontal split' })
+
+-- Open terminal window at 1/4 the size of the screen and maintain the size relative to the window
+local term_win = nil
+
+local function resize_terminal()
+  if term_win and vim.api.nvim_win_is_valid(term_win) then
+    local total_height = vim.o.lines - vim.o.cmdheight
+    local split_height = math.floor(total_height / 4)
+    vim.api.nvim_win_set_height(term_win, split_height)
+  end
+end
+
+function Open_term()
+  vim.cmd ':split | terminal'
+  term_win = vim.api.nvim_get_current_win()
+  resize_terminal()
+end
+
+vim.api.nvim_create_autocmd('VimResized', {
+  callback = resize_terminal,
+})
+
+vim.keymap.set('n', '<A-t>', ':lua Open_term() <CR>', { desc = 'Open terminal in horizontal split' })
 
 -- Moving text up and down
 vim.keymap.set('n', '<A-j>', 'ddp', { desc = 'Move text down one line' })
 vim.keymap.set('n', '<A-k>', 'ddkP', { desc = 'Move text up one line' })
+
+-- Copying line to below and above
+vim.keymap.set('n', '<A-J>', 'yyp', { desc = 'Copy text to line below' })
+vim.keymap.set('n', '<A-K>', 'yyP', { desc = 'Copy text to line below' })
+
+-- Set psql to have sql highlighting
+vim.api.nvim_create_autocmd('BufRead', {
+  pattern = '*.psql',
+  callback = function()
+    vim.bo.filetype = 'sql'
+  end,
+})
 
 -- Copying line to below and above
 vim.keymap.set('n', '<A-J>', 'yyp', { desc = 'Copy text to line below' })
@@ -209,7 +244,11 @@ vim.api.nvim_create_autocmd('BufRead', {
     vim.bo.filetype = 'sql'
   end,
 })
-
+-- TIP: Disable arrow keys in normal mode
+-- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+-- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+-- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+-- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -636,7 +675,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         -- gopls = {},
-        pyright = {},
+        -- pyright = {},
         -- rust_analyzer = {},
         csharp_ls = {},
         --
