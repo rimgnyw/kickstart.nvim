@@ -89,6 +89,15 @@ return {
           separator_style = 'slant',
           style_preset = require('bufferline').style_preset.no_italic,
           diagnostics = 'nvim_lsp',
+          close_command = function(bufnum)
+            require('bufdelete').bufdelete(bufnum, true)
+          end,
+          -- prevent switching terminal split to different buffer
+          left_mouse_command = function(bufnum)
+            if vim.bo.buftype ~= 'terminal' then
+              vim.cmd('buffer' .. bufnum)
+            end
+          end,
           offsets = {
             {
               filetype = 'neo-tree',
@@ -97,6 +106,10 @@ return {
               separator = true, -- use a "true" to enable the default, or set your own character
             },
           },
+          -- filter out terminal buffers
+          custom_filter = function(buf, _)
+            return vim.bo[buf].buftype ~= 'terminal'
+          end,
         },
         highlights = {
           -- Highlight the error buffer even if it's not selected
